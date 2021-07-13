@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Header } from './components';
-
+import { Header, PokemonList } from './components';
+import {getPokemon, getPokemons} from './requests'
 const POKEMON_API = `https://pokeapi.co/api/v2/`
 const GET_50_POKEMON_PATH = `pokemon?limit=50`
 
@@ -10,8 +10,7 @@ export default function App() {
   const [pokemonList, setPokemonList] = useState([])
   // grab list of pokemon and set the state to the list
   useEffect(() => {
-    fetch(`${POKEMON_API}${GET_50_POKEMON_PATH}`)
-    .then(res => res.json())
+getPokemons(50).then(res => res.json())
     .then(payload => {
       setPokemonList(payload.results)
     })
@@ -22,10 +21,10 @@ export default function App() {
     <View style={styles.container}>
       <Header />
       <View style={styles.pokemonList}>
-        {
-          pokemonList.map(pokemon => <View style={styles.listItem}><Text style={styles.listItemText}>{pokemon.name}</Text></View>)
-        }
+      <PokemonList list={pokemonList}/>
+         
       </View>
+      
       <StatusBar style="auto" />
     </View>
   );
