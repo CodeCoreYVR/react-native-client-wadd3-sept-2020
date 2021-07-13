@@ -7,7 +7,7 @@ export default function Header(){
 
 const styles = StyleSheet.create({
     header: {
-        flex: 1,
+        width: '100%',
         backgroundColor: '#ee1515',
         alignItems: 'center',
         justifyContent: 'center',
