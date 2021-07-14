@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,11 +15,11 @@ export default function App() {
   // grab list of pokemon and set the state to the list
   useEffect(() => {
     fetch(`${POKEMON_API}${GET_50_POKEMON_PATH}`)
-    .then(res => res.json())
-    .then(payload => {
-      setPokemonList(payload.results)
-    })
-    .catch(e => console.log(e))
+      .then(res => res.json())
+      .then(payload => {
+        setPokemonList(payload.results)
+      })
+      .catch(e => console.log(e))
   }, [])
   console.log(pokemonList)
   return (
