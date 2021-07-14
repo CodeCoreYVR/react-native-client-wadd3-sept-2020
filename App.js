@@ -1,10 +1,15 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, View, ScrollView, SafeAreaView } from 'react-native';
-import { Header } from './components';
+import { StyleSheet, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Header, ScrollableList, PokemonDetail } from './components';
 
 const POKEMON_API = `https://pokeapi.co/api/v2/`
 const GET_50_POKEMON_PATH = `pokemon?limit=50`
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [pokemonList, setPokemonList] = useState([])
@@ -19,17 +24,26 @@ export default function App() {
   }, [])
   console.log(pokemonList)
   return (
-    <View style={styles.container}>
-      <Header />
-      <SafeAreaView style={styles.pokemonList}>
-        <ScrollView>
-          {
-            pokemonList.map(pokemon => <View style={styles.listItem}><Text style={styles.listItemText}>{pokemon.name}</Text></View>)
-          }
-        </ScrollView>
-      </SafeAreaView>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+        name="Pokemon List" // Name of the route
+        children={({navigation}) => {
+          return(
+            <View style={styles.container}>
+              <Header />
+              <ScrollableList list={pokemonList} navigation={navigation}/>
+            </View>
+          )
+        }}
+        options={{title: 'Pokédex'}}
+        />
+        <Stack.Screen 
+        name="Pokemon Detail"
+        component={PokemonDetail}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -41,19 +55,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-  pokemonList: {
-    flex: 1,
-    flexDirection: 'column',
-    width: '100%',
-  },
-  listItem: {
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-  },
-  listItemText: {
-    fontSize: 20,
-  }
 });
